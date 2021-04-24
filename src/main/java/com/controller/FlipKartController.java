@@ -3,15 +3,24 @@ package com.controller;
 import com.entity.Category;
 import com.entity.Product;
 import com.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service.CategoryService;
 import com.service.ProductService;
 import com.service.Userservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +32,10 @@ public class FlipKartController {
     @Autowired private Userservice userservice;
     @Autowired private ProductService productService;
     @Autowired private CategoryService categoryService;
+
+    private byte[] bytes;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     // get All total product
     @GetMapping("totoalPro")
@@ -49,17 +62,24 @@ public class FlipKartController {
     }
 
     @PostMapping("/category")
-    public ResponseEntity<?> addCategory(@RequestBody Category category){
+    public String addCategory(@RequestBody Category category){
         Category category1 = null;
         category1 = categoryService.addCategory(category);
-        return new ResponseEntity <>("Category Added", HttpStatus.CREATED);
+        return "Category Added";
 
     }
+    @PostMapping("/upload")
+    public void getFileName(@RequestParam("imageFile") MultipartFile file) throws IOException {
+      this.bytes = file.getBytes();
+
+
+    }
+
     @PostMapping(value = "/creProduct")
     @CrossOrigin(value = "http://localhost:4200")
-    public ResponseEntity<?> createProduct(@RequestBody Product product){
-        System.out.println("Controlelr"+product.toString());
+    public ResponseEntity<?> createProduct(@RequestBody Product product) throws JsonProcessingException {
         Product product1 = null;
+      product.setpPhoto(this.bytes);
         product1 = productService.saveProduct(product);
         if (product1 !=null){
             return new ResponseEntity <>("Product is saved", HttpStatus.OK);
