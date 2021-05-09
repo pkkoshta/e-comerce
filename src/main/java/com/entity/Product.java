@@ -14,8 +14,7 @@ public class Product {
     private String pName;
     @Column(length = 6000)
     private String pDesc;
-    @Column(name = "pPhoto", length = 4000)
-    private byte pPhoto[];
+    private String pPhoto;
     private int pPrice;
     private int pDiscount;
     private int pQuatity;
@@ -23,6 +22,9 @@ public class Product {
     @JsonBackReference
     private Category category;
 
+    public String getpPhoto () {
+        return pPhoto;
+    }
 
     public Category getCategory() {
         return category;
@@ -34,7 +36,9 @@ public class Product {
 
 
     }
-
+    public void setpPhoto (String pPhoto) {
+        this.pPhoto = pPhoto;
+    }
     public int getPid () {
         return pid;
     }
@@ -59,13 +63,6 @@ public class Product {
         this.pDesc = pDesc;
     }
 
-    public byte[] getpPhoto () {
-        return pPhoto;
-    }
-
-    public void setpPhoto (byte[] pPhoto) {
-        this.pPhoto = pPhoto;
-    }
 
     public int getpPrice () {
         return pPrice;
@@ -97,7 +94,7 @@ public class Product {
                 "pid=" + pid +
                 ", pName='" + pName + '\'' +
                 ", pDesc='" + pDesc + '\'' +
-                ", pPhoto=" + Arrays.toString(pPhoto) +
+                ", pPhoto='" + pPhoto + '\'' +
                 ", pPrice=" + pPrice +
                 ", pDiscount=" + pDiscount +
                 ", pQuatity=" + pQuatity +
@@ -105,8 +102,7 @@ public class Product {
                 '}';
     }
 
-    public Product (int pid, String pName, String pDesc, byte[] pPhoto, int pPrice, int pDiscount, int pQuatity, Category category) {
-        this.pid = pid;
+    public Product (String pName, String pDesc, String pPhoto, int pPrice, int pDiscount, int pQuatity, Category category) {
         this.pName = pName;
         this.pDesc = pDesc;
         this.pPhoto = pPhoto;
