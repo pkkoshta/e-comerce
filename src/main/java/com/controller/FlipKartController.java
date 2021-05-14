@@ -3,7 +3,12 @@ package com.controller;
 import com.entity.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.razorpay.Order;
+import com.razorpay.OrderClient;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 import com.service.*;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -48,12 +53,13 @@ public class FlipKartController {
     @Autowired
     private CheckOutService checkOutService;
 
-    @PostMapping("/checkout")
-    public void saveBillingAdd(@RequestBody CheckOut checkOut){
-        System.out.println(checkOut.toString());
-        checkOutService.saveCheckoutetails(checkOut);
-    }
 
+//    get th
+    @GetMapping("/index")
+    public String getThymlef(){
+        System.out.println("Thymlef");
+        return "index";
+    }
 
     // get all cart items
     @GetMapping("/getCartItem")
@@ -74,7 +80,21 @@ public class FlipKartController {
             return new String ("Something went wroung ");
         }
     }
+    @PostMapping("/check")
+    public String addCheckout(@RequestBody CheckOut checkOut) throws RazorpayException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("amount", 1*100);
+        jsonObject.put("currency", "INR");
+        jsonObject.put("receipt", "txn_213523");
+//                create the razor pay client api
+        RazorpayClient razorpayClient = new RazorpayClient("rzp_test_SHyAkg8IInpXHP", "s6JobsOvBXlk3kPjZ817l8j1");
 
+       Order order = razorpayClient.Orders.create(jsonObject);
+       Payment payment = new Payment();
+       payment.getAmount(order.toJson());
+         System.out.println("check out "+order.toString());
+        return order.toString();
+    }
     // get All total product
     @GetMapping("totoalPro")
     public int getNumberOfProduct(){

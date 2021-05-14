@@ -30,6 +30,16 @@ public class CheckOut {
         this.total = total;
     }
 
+    public CheckOut (String firstName, String lastName, String address, String country, String state, String zip, double total) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.country = country;
+        this.state = state;
+        this.zip = zip;
+        this.total = total;
+    }
+
     public CheckOut () {
     }
 
@@ -99,7 +109,7 @@ public class CheckOut {
 
     @Override
     public String toString () {
-        return "CheckOutController{" +
+        return "CheckOut{" +
                 "ckoId=" + ckoId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

@@ -1,8 +1,5 @@
 package com.controller;
 
-import com.entity.CheckOut;
-import com.service.CheckOutService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
